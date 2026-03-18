@@ -2,17 +2,62 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
+import JsonLd from "@/components/json-ld";
 import { contactAreas, profile, socialLinks } from "@/lib/site-content";
+import {
+  absoluteUrl,
+  createBreadcrumbJsonLd,
+  createPageMetadata,
+  sameAsLinks,
+} from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Contact | Afeez Rabiu",
+export const metadata: Metadata = createPageMetadata({
+  title: "Contact",
   description:
     "Contact Afeez Olawale Rabiu for digital marketing, copywriting, SEO/SEM, campaign strategy, and research-led content work.",
-};
+  path: "/contact",
+  keywords: [
+    "contact digital marketer",
+    "SEO consultant contact",
+    "copywriter contact",
+  ],
+});
 
 export default function ContactPage() {
+  const contactJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    name: `Contact ${profile.name}`,
+    description:
+      "Direct contact details and professional links for digital marketing, copywriting, and research-led content work.",
+    url: absoluteUrl("/contact"),
+    mainEntity: {
+      "@type": "Person",
+      name: profile.name,
+      jobTitle: profile.role,
+      email: `mailto:${profile.email}`,
+      telephone: profile.phone,
+      sameAs: sameAsLinks,
+      contactPoint: [
+        {
+          "@type": "ContactPoint",
+          contactType: "professional inquiries",
+          email: profile.email,
+          telephone: profile.phone,
+          availableLanguage: ["English"],
+        },
+      ],
+    },
+  };
+
+  const breadcrumbJsonLd = createBreadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "Contact", path: "/contact" },
+  ]);
+
   return (
     <main className="px-6 py-20 md:py-24">
+      <JsonLd data={[contactJsonLd, breadcrumbJsonLd]} />
       <section className="mx-auto max-w-5xl">
         <p className="text-sm font-medium uppercase tracking-[0.24em] text-amber-700">
           Contact

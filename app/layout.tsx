@@ -1,16 +1,12 @@
-import type { Metadata } from "next";
-
 import Footer from "@/components/footer";
+import JsonLd from "@/components/json-ld";
 import Navbar from "@/components/navbar";
 import { profile } from "@/lib/site-content";
+import { personJsonLd, rootMetadata, websiteJsonLd } from "@/lib/seo";
 
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: "Afeez Olawale Rabiu | Digital Marketing Executive",
-  description:
-    "Digital Marketing Executive and Research-Oriented Copywriter with 5+ years of experience across paid media, SEO/SEM, content strategy, and performance reporting.",
-};
+export const metadata = rootMetadata;
 
 export default function RootLayout({
   children,
@@ -20,6 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className="min-h-screen bg-white text-black antialiased">
+        <JsonLd data={[websiteJsonLd, personJsonLd]} />
         <Navbar />
         {children}
         <Footer />

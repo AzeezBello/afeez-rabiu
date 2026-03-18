@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import JsonLd from "@/components/json-ld";
 import {
   aboutHighlights,
   certifications,
@@ -7,16 +8,49 @@ import {
   profile,
   toolGroups,
 } from "@/lib/site-content";
+import {
+  absoluteUrl,
+  createBreadcrumbJsonLd,
+  createPageMetadata,
+} from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "About | Afeez Rabiu",
+export const metadata: Metadata = createPageMetadata({
+  title: "About",
   description:
     "Learn about Afeez Olawale Rabiu's background in digital marketing, copywriting, journalism, research, and performance optimization.",
-};
+  path: "/about",
+  keywords: [
+    "about Afeez Olawale Rabiu",
+    "digital marketing background",
+    "copywriter resume",
+  ],
+});
 
 export default function AboutPage() {
+  const aboutJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    name: `About ${profile.name}`,
+    description:
+      "Background, experience timeline, certifications, and tools for Afeez Olawale Rabiu.",
+    url: absoluteUrl("/about"),
+    mainEntity: {
+      "@type": "Person",
+      name: profile.name,
+      jobTitle: profile.role,
+      description: profile.summary,
+      url: absoluteUrl("/"),
+    },
+  };
+
+  const breadcrumbJsonLd = createBreadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "About", path: "/about" },
+  ]);
+
   return (
     <main className="px-6 py-20 md:py-24">
+      <JsonLd data={[aboutJsonLd, breadcrumbJsonLd]} />
       <section className="mx-auto max-w-5xl">
         <p className="text-sm font-medium uppercase tracking-[0.24em] text-amber-700">
           About
